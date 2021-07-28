@@ -41,6 +41,8 @@ while true do
 end
 
 
+print(string.sub(str1,4,4))
+
 function split(str,delimiter)
     local dLen = string.len(delimiter)
     local newDeli = ''
@@ -87,3 +89,39 @@ end
 --测试
 local str = "1234,389,abc";
 local list = string.split(str, ",");
+
+
+-- https://zhuanlan.zhihu.com/p/29315286
+-- https://www.cnblogs.com/gdev/archive/2012/08/22/lua-performance-tips-5.html
+-- https://zhuanlan.zhihu.com/p/97917024
+-- https://blog.csdn.net/szm_cuit/article/details/55209619
+
+
+local t = {}
+for line in io.lines() do
+    t[#t + 1] = line
+end
+s = table.concat(t, "\n")
+
+
+
+---从右侧遍历字符串，取指定字符的前后字符串
+-- @param strurl  待解取字符串；
+--        strchar 指定字符串；
+--        bafter= true 取指定字符后字符串
+-- @return 截取后的字符串
+-- end --
+function getUrlFileName( strurl, strchar, bafter)
+
+    local ts = string.reverse(strurl)
+    local param1, param2 = string.find(ts, strchar)  -- 这里以"/"为例
+    local m = string.len(strurl) - param2 + 1
+    local result
+    if (bafter == true) then
+        result = string.sub(strurl, m+1, string.len(strurl))
+    else
+        result = string.sub(strurl, 1, m-1)
+    end
+
+    return result
+end
